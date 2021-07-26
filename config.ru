@@ -10,7 +10,8 @@ Sidekiq.configure_client do |config|
   }
 end
 
-map '/' do
+mount_at = ENV['MOUNT_AT'] ? ENV['MOUNT_AT'] : '/'
+map mount_at do
   if ENV['USERNAME'] && ENV['PASSWORD']
     use Rack::Auth::Basic, "Protected Area" do |username, password|
       # Protect against timing attacks: (https://codahale.com/a-lesson-in-timing-attacks/)

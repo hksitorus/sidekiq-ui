@@ -5,7 +5,11 @@ env:
 USERNAME=username
 PASSWORD=password
 REDIS_URL=redis://myredishost:6379/0
+MOUNT_AT=/sidekiq-ui
 ```
+
+* leave `USERNAME` and `PASSWORD` empty and it wont have basic auth
+
 
 example run using docker:
 ```
