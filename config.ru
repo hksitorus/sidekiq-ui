@@ -2,6 +2,17 @@ require 'sidekiq'
 require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
 require 'rack/session'
+
+# Patch: guard against nil values in number_with_delimiter (sidekiq#busy page crash)
+module Sidekiq
+  module WebHelpers
+    alias_method :original_number_with_delimiter, :number_with_delimiter
+    def number_with_delimiter(number, options = {})
+      return %(<span data-nwp="0">0</span>) if number.nil?
+      original_number_with_delimiter(number, options)
+    end
+  end
+end
 use Rack::Session::Cookie, secret: File.read(".session.key"), same_site: true, max_age: 86400
 
 Sidekiq.configure_client do |config|
